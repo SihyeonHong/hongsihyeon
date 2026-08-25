@@ -21,6 +21,16 @@ export async function SidebarContent() {
               </span>
               님 환영합니다
             </p>
+            {session.user.role === "admin" && (
+              <Button
+                variant="outline"
+                className="w-full"
+                nativeButton={false}
+                render={<Link href="/admin" />}
+              >
+                관리자 페이지
+              </Button>
+            )}
             <form action={logout}>
               <Button type="submit" variant="outline" className="w-full">
                 로그아웃
