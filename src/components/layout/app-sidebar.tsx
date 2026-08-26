@@ -2,17 +2,27 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { logout } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+} from "@/components/ui/sidebar";
 
-export async function SidebarContent() {
+export async function AppSidebar() {
   const session = await auth();
 
   return (
-    <div className="flex h-full flex-col p-4">
-      <Link href="/" className="text-lg font-semibold tracking-tight">
-        Hong Sihyeon
-      </Link>
+    <Sidebar side="right">
+      <SidebarHeader className="p-4">
+        <Link href="/" className="text-lg font-semibold tracking-tight">
+          Hong Sihyeon
+        </Link>
+      </SidebarHeader>
 
-      <div className="mt-auto flex flex-col gap-3">
+      <SidebarContent />
+
+      <SidebarFooter className="gap-3 p-4">
         {session?.user ? (
           <>
             <p className="text-sm text-muted-foreground">
@@ -56,7 +66,7 @@ export async function SidebarContent() {
             </Button>
           </>
         )}
-      </div>
-    </div>
+      </SidebarFooter>
+    </Sidebar>
   );
 }

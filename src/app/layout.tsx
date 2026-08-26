@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { SidebarContent } from "@/components/layout/sidebar-content";
-import { SidebarShell } from "@/components/layout/sidebar-shell";
+import { AppSidebar } from "@/components/layout/app-sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 
 const pretendard = localFont({
@@ -23,13 +27,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${pretendard.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
-        <div className="flex min-h-full flex-1 flex-col md:flex-row">
-          <SidebarShell>
-            <SidebarContent />
-          </SidebarShell>
-          <main className="flex flex-1 flex-col">{children}</main>
-        </div>
+      <body className="min-h-full">
+        <SidebarProvider className="min-h-full">
+          <SidebarInset>
+            <div className="sticky top-0 z-40 flex items-center justify-between bg-background p-2 md:hidden">
+              <span className="pl-2 text-sm font-medium tracking-tight">
+                Hong Sihyeon
+              </span>
+              <SidebarTrigger />
+            </div>
+            <main className="flex flex-1 flex-col">{children}</main>
+          </SidebarInset>
+          <AppSidebar />
+        </SidebarProvider>
         <Toaster />
       </body>
     </html>
