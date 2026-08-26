@@ -1,5 +1,7 @@
 "use server";
 
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { eq, or } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
@@ -16,12 +18,13 @@ export async function login(
 ): Promise<FormActionState> {
   const email = formData.get("email");
   const password = formData.get("password");
+  const rememberMe = formData.get("rememberMe") === "on";
 
   try {
     await signIn("credentials", {
       email,
       password,
-      redirectTo: "/",
+      redirect: false,
     });
   } catch (error) {
     if (error instanceof AuthError) {
@@ -29,6 +32,25 @@ export async function login(
     }
     throw error;
   }
+
+  // "자동로그인" 미체크 시, 발급된 세션 쿠키를 브라우저 세션 쿠키(만료 시간 없음)로 재발급해
+  // 브라우저를 닫으면 로그아웃되도록 한다. 체크 시 next-auth 기본 만료(30일)를 그대로 둔다.
+  if (!rememberMe) {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore
+      .getAll()
+      .find((c) => c.name.endsWith("authjs.session-token"));
+    if (sessionCookie) {
+      cookieStore.set(sessionCookie.name, sessionCookie.value, {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: sessionCookie.name.startsWith("__Secure-"),
+      });
+    }
+  }
+
+  redirect("/");
 }
 
 const SignupSchema = z.object({

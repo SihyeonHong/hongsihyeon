@@ -16,7 +16,7 @@ export async function AppSidebar() {
     <Sidebar side="right">
       <SidebarHeader className="p-4">
         <Link href="/" className="text-lg font-semibold tracking-tight">
-          Hong Sihyeon
+          홍시현의 페이지
         </Link>
       </SidebarHeader>
 

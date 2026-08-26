@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import Link from "next/link";
 import { login } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -25,6 +26,12 @@ export function LoginForm() {
           required
           autoComplete="current-password"
         />
+      </div>
+      <div className="flex items-center gap-2">
+        <Checkbox id="rememberMe" name="rememberMe" />
+        <Label htmlFor="rememberMe" className="text-sm font-normal">
+          자동로그인
+        </Label>
       </div>
       {state?.error && <p className="text-sm text-destructive">{state.error}</p>}
       <Button type="submit" disabled={pending} className="mt-2">

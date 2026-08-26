@@ -76,3 +76,22 @@
 - `docs/PLANNING.md` 기준 Blog(`/blog`)·Notes(`/notes`)·Guestbook(`/guestbook`) 라우트 미착수.
 - 홈페이지 포트폴리오 콘텐츠(자기소개, 프로젝트 카드 등) 비어있음.
 - `/admin` 페이지 실제 관리 기능 논의 필요.
+
+---
+
+## 2026-08-26 - `(커밋 전)` feat: 로그인 폼에 자동로그인(로그인 유지) 체크박스 추가
+
+### 한 일
+- 로그인 폼(`src/components/auth/login-form.tsx`)에 "자동로그인" 체크박스 추가. `npx shadcn@4.19.0 add checkbox`로 `src/components/ui/checkbox.tsx` 생성 후, CLI 기본 출력의 `border-input`/`dark:*` 클래스를 프로젝트 규칙(테두리 없음, `bg-muted` 채움, 다크모드 제거)에 맞게 수정.
+- `src/lib/actions/auth.ts`의 `login()` 액션: next-auth v5는 세션 쿠키 만료(Max-Age)를 로그인 시점마다 동적으로 바꿀 수 있는 공식 API가 없음(`session.maxAge`는 앱 설정 시점에 고정, 기본 30일). 이를 우회하기 위해 `signIn(..., { redirect: false })`로 호출해 리다이렉트 전에 제어권을 돌려받은 뒤, 체크 해제 시에만 next-auth가 이미 발급한 세션 쿠키(`authjs.session-token` / `__Secure-authjs.session-token`, 접두사는 이름 자체로 판별)를 만료 시간 없이 재발급(`cookies().set`)해 브라우저 종료 시 로그아웃되게 함. 체크 시에는 손대지 않아 기존 30일 만료 그대로 유지. 이후 직접 `redirect("/")` 호출로 기존 리다이렉트 동작 유지.
+- 검증: `tsc --noEmit` 통과, 변경 파일 대상 `eslint` 통과. 실제 브라우저에서 체크/미체크 시 쿠키 발급 동작(개발자도구 Application 탭 등)은 아직 확인 못함 — 다음 세션에서 확인 필요.
+
+### 기획 변경
+- 없음.
+
+### 다음에 할 일
+- 브라우저에서 자동로그인 체크/미체크 각각 로그인 후 세션 쿠키의 Expires/Max-Age 값이 의도대로(체크: 30일 뒤 만료, 미체크: 세션 쿠키) 나오는지 직접 확인.
+- `docs/PLANNING.md` 기준 Blog(`/blog`)·Notes(`/notes`)·Guestbook(`/guestbook`) 라우트 미착수.
+- 홈페이지 포트폴리오 콘텐츠(자기소개, 프로젝트 카드 등) 비어있음.
+- `/admin` 페이지 실제 관리 기능 논의 필요.
+- 모바일 폭에서 사이드바 Sheet 드로어 열기/닫기 재확인 (이전 세션부터 이월).
