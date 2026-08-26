@@ -57,7 +57,7 @@
 
 ---
 
-## 2026-08-26 - `(커밋 전)` feat: 사이드바를 shadcn 컴포넌트로 교체하고 오른쪽으로 이동
+## 2026-08-26 - `07693ae` feat: 사이드바를 shadcn 컴포넌트로 교체하고 오른쪽으로 이동
 
 ### 한 일
 - 직접 구현했던 사이드바(`sidebar-shell.tsx` + `sidebar-content.tsx`)를 shadcn 공식 `sidebar` 컴포넌트로 교체.
@@ -79,7 +79,7 @@
 
 ---
 
-## 2026-08-26 - `(커밋 전)` feat: 로그인 폼에 자동로그인(로그인 유지) 체크박스 추가
+## 2026-08-26 - `1c5872c` feat: 로그인 폼에 자동로그인(로그인 유지) 체크박스 추가
 
 ### 한 일
 - 로그인 폼(`src/components/auth/login-form.tsx`)에 "자동로그인" 체크박스 추가. `npx shadcn@4.19.0 add checkbox`로 `src/components/ui/checkbox.tsx` 생성 후, CLI 기본 출력의 `border-input`/`dark:*` 클래스를 프로젝트 규칙(테두리 없음, `bg-muted` 채움, 다크모드 제거)에 맞게 수정.
